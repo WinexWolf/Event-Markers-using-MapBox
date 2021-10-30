@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display a popup</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+.distance-container {
+position: absolute;
+top: 10px;
+left: 10px;
+z-index: 1;
+}
+ 
+.distance-container > * {
+background-color: rgba(0, 0, 0, 0.5);
+color: #fff;
+font-size: 11px;
+line-height: 18px;
+display: block;
+margin: 0;
+padding: 5px 10px;
+border-radius: 3px;
+}
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYW51a3JpdGlqYWlzd2FsMDEiLCJhIjoiY2t2YXkwNWl6MDhkNTJwcG5ybXNwYTN1ZSJ9.cgO960p_lqZGfZ2K_VolYw';
+    const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [53.8478, 23.4241],
+        zoom: 7
+
+
+    const popup1 = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat([55.3279045, 25.2281726])
+        .setHTML('<h1>Hello World!</h1>')
+        .addTo(map);
+const popup2 = new mapboxgl.Popup({ closeOnClick: false })
+        .setLngLat([55.2869344, 25.2233459])
+        .setHTML('<h1>Hello World!</h1>')
+        .addTo(map);
+
+
+map.addControl(
+new MapboxGeocoder({
+accessToken: mapboxgl.accessToken,
+ 
+// Limit seach results to UAE
+countries: 'ae'
+}));
+mapboxgl: mapboxgl
+
+
+map.addControl(new mapboxgl.NavigationControl());
+
+
+
+map.addLayer({
+'id': 'events_data_uae-layer',
+'type': 'circle',
+'source': 'events_data_uae',
+'paint': {
+'circle-radius': 8,
+'circle-stroke-width': 10,
+'circle-color': 'red',
+'circle-stroke-color': 'white'
+}
+});
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Display a map on a webpage</title>
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.5.1/mapbox-gl.js"></script>
+<style>
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+.mapboxgl-popup-content h3 {
+background: #91c949;
+color: #fff;
+margin: 0;
+padding: 10px;
+border-radius: 3px 3px 0 0;
+font-weight: 700;
+margin-top: 10px;
+}
+
+.mapboxgl-popup-content h4 {
+margin: 0;
+padding: 10px;
+font-weight: 400;
+}
+
+#buttons {
+width: 90%;
+margin: 0 auto;
+margin-left:200px;
+}
+.button {
+display: inline-block;
+position: relative;
+cursor: pointer;
+width: 10%;
+padding: 8px;
+border-radius: 3px;
+margin-top: 10px;
+font-size: 12px;
+text-align: center;
+color: #fff;
+background: #ee8a65;
+font-family: sans-serif;
+font-weight: bold;
+}
+
+
+
+</style>
+</head>
+<body>
+<div id="map"></div>
+
+
+<ul id="buttons">
+<li id="button-en" class="button">English</li>
+<li id="button-ar" class="button">Arabic</li>
+</ul>
+
+
+
+<script>
+
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYW51a3JpdGlqYWlzd2FsMDEiLCJhIjoiY2t2YXkwNWl6MDhkNTJwcG5ybXNwYTN1ZSJ9.cgO960p_lqZGfZ2K_VolYw';
+    const map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/anukritijaiswal01/ckvdglxjy303g14qzhastlhog', // style URL
+       center: [54.2000, 24.2500],
+        zoom: 7
+    });
+
+
+
+map.on('load', () => {
+map.addSource('event_details-67lax2', {
+type: 'vector',
+url: 'mapbox://anukritijaiswal01.6qde46w3'
+});
+
+
+
+map.addLayer({
+'id': 'event-details-layer',
+'type': 'circle',
+'source': 'event_details-67lax2',
+'source-layer': 'event_details-67lax2',
+'paint': {
+'circle-color': '#FFFF00',
+'circle-radius': 6,
+'circle-stroke-width': 2,
+'circle-stroke-color': '#FFFFFF'
+}
+});
+
+map.on('click', (event) => {
+const features = map.queryRenderedFeatures(event.point, {
+layers: ['event-details-layer']
+});
+if (!features.length) {
+return;
+}
+const feature = features[0];
+ 
+const popup = new mapboxgl.Popup({ offset: [0, -15] })
+.setLngLat(feature.geometry.coordinates)
+.setHTML(
+`<h3>${feature.properties.title}</h3><h4>${feature.properties.description}</h4><h4>Starts at: ${feature.properties.start}</h4>`
+)
+.addTo(map);
+
+});
+
+document.getElementById('buttons').addEventListener('click', (event) => {
+const language = event.target.id.substr('button-'.length);
+// Use setLayoutProperty to set the value of a layout property in a style layer.
+// The three arguments are the id of the layer, the name of the layout property,
+// and the new property value.
+map.setLayoutProperty('country-label', 'text-field', [
+'get',
+`name_${language}`
+]);
+
+});
+});
+
+</script>
+
+</body>
+</html>
